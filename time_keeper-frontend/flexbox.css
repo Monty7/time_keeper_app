@@ -1,4 +1,4 @@
-.container, form {
+.container, .calendar {
     display: inline-flex;
     flex-wrap: wrap;
 }
