@@ -26,3 +26,20 @@ calendarContainer.addEventListener('click', function(e){
     }
 })
 
+function calculateTime(start, end){
+    start = start.split(":");
+    end = end.split(":");
+
+    let startTime = new Date(0, 0, 0, start[0], start[1], 0);
+    let endTime = new Date(0, 0, 0, end[0], end[1], 0);
+    let difference = endDate.getTime() - startDate.getTime();
+    console.log(difference);
+    let hours = Math.floor(difference / 1000 / 60 / 60);
+    console.log(hours);
+    difference -= hours * 1000 * 60 * 60;
+    let minutes = Math.floor(difference / 1000 / 60);
+    //return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
+
+    )
+}
+
