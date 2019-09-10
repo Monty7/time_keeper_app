@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_10_185607) do
+ActiveRecord::Schema.define(version: 2019_09_10_190930) do
 
-  create_table "times", force: :cascade do |t|
+  create_table "user_times", force: :cascade do |t|
     t.datetime "clock_in"
     t.datetime "clock_out"
     t.string "month"
