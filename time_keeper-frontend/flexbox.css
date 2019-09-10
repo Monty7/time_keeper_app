@@ -3,7 +3,9 @@
     flex-wrap: wrap;
 }
 
-header {
-    flex-direction: column;
 
+
+h1 {
+
+    align-content: center;
 }
