@@ -4,10 +4,9 @@ class UserTimesController < ApplicationController
     end
 
     def create
-      user = User.find_or_create_by(user_times_params)
-      
+      times = UserTimes.create(user_times_params)
         binding.pry
-      end
+  
     end
 
     def update

@@ -1,7 +1,10 @@
-const BASE_URL = "http://localhost:3000/user_times";
+const TIMES_URL = "http://localhost:3000/user_times";
+const USER_URL = "http://localhost:3000/users";
 let loggedInUser = null;
 const calendarContainer = document.querySelector('.calendar');
-const signInInput = document.querySelector('#sign_in_user');
+let calculateMonthTotal = 0;
+
+const submitUser = document.querySelector('#submit_user');
 //const addTimeBtn = document.querySelectorAll('.addTime');addTimeBtn.addEventListener('click', function(e){
 calendarContainer.addEventListener('click', function(e){
 
@@ -11,38 +14,50 @@ calendarContainer.addEventListener('click', function(e){
         let captured_date = e.target.parentElement.children[0].innerText;
         let clocked_in = e.target.parentElement.children[2].value;
         let clocked_out = e.target.parentElement.children[4].value;
-        fetch(BASE_URL, {
+       // let totalDayTime = calculateDayTime(clocked_in, clocked_out); //returns minutes
+        
+        calculateMonthTotal += timeDifferenceInADay(clocked_out, clocked_in)
+
+        let totalMonthTime = convertTime(calculateMonthTotal);
+
+        console.log(totalMonthTime);
+        fetch(TIMES_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"           
             },
-            body: JSON.stringify({clock_in: clocked_in, clock_out: clocked_out})
+            body: JSON.stringify({clock_in: clocked_in, clock_out: clocked_out, month_time: totalMonthTime})
         })
         .then(function(res){
-            console.log(res.json());
+           // console.log(res.json());
             return res.json();
         })
         .then(function(data){
             if (data.err_message){
                 alert(data.err_message)
             } else {
-                console.log(calculateTime(clocked_in, clocked_out));
+                console.log(data);
+               // console.log(calculateDayTime(clocked_in, clocked_out));
+               // console.log(calclateMonthTotal());
           }
         })
     }
 })
 
-signInInput.addEventListener(submit, function signUp(user){
-    const loggedInUser = document.querySelector('#sign_in_user').value;
+submitUser.addEventListener('click', function(e) {
+    console.log(e);
+    e.preventDefault();
+    const signInInput = document.querySelector('#sign_in_user');
+    const loggedInUser = signInInput.value;
 
-    fetch(BaseURL, {
+    fetch(USER_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"           
         },
-        body: JSON.stringify({clock_in: clocked_in, clock_out: clocked_out})
+        body: JSON.stringify({name: loggedInUser})
     })
     .then(function(res){
         return res.json();
@@ -55,22 +70,30 @@ signInInput.addEventListener(submit, function signUp(user){
 
 
 
-function calculateTime(start, end){
+function convertTime(timeSeconds){
+    
+    //let difference = timeDifferenceInADay(end, start);
+   // console.log(difference);
+    let hours = Math.floor(timeSeconds / 1000 / 60 / 60);
+   // console.log(hours);
+    timeSeconds -= hours * 1000 * 60 * 60;
+    let minutes = Math.floor(timeSeconds / 1000 / 60);
+    
+   
+    //return as an object instead
+    return `${hours}:${minutes}`;
+    //return minutes;
+    //return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
+ 
+}
+
+function timeDifferenceInADay(end, start){
     start = start.split(":");
     end = end.split(":");
 
     let startTime = new Date(0, 0, 0, start[0], start[1], 0);
     let endTime = new Date(0, 0, 0, end[0], end[1], 0);
-    let difference = endDate.getTime() - startDate.getTime();
-    console.log(difference);
-    let hours = Math.floor(difference / 1000 / 60 / 60);
-    console.log(hours);
-    difference -= hours * 1000 * 60 * 60;
-    let minutes = Math.floor(difference / 1000 / 60);
-    
-    return `${hours}:${minutes}`;
-    //return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
-
-    
+    return endTime.getTime() - startTime.getTime(); //seconds
 }
+
 
