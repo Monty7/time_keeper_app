@@ -4,8 +4,9 @@ const calendarContainer = document.querySelector('.calendar');
 //const addTimeBtn = document.querySelectorAll('.addTime');addTimeBtn.addEventListener('click', function(e){
 calendarContainer.addEventListener('click', function(e){
 
-    e.preventDefault();
+    
     if(e.target.tagName === "BUTTON"){
+        e.preventDefault();
         let captured_date = e.target.parentElement.children[0].innerText;
         let clocked_in = e.target.parentElement.children[2].value;
         let clocked_out = e.target.parentElement.children[4].value;
@@ -18,10 +19,14 @@ calendarContainer.addEventListener('click', function(e){
             body: JSON.stringify({clock_in: clocked_in, clock_out: clocked_out})
         })
         .then(function(res){
-            return res.json();
+            console.log(res.json());
         })
         .then(function(data){
-            console.log(data);
+            if (data.err_message){
+                alert(data.err_message)
+            } else {
+                console.log(calculateTime(clocked_in, clocked_out));
+          }
         })
     }
 })
@@ -38,8 +43,10 @@ function calculateTime(start, end){
     console.log(hours);
     difference -= hours * 1000 * 60 * 60;
     let minutes = Math.floor(difference / 1000 / 60);
+    
+    return `${hours}:${minutes}`;
     //return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
 
-    )
+    
 }
 
