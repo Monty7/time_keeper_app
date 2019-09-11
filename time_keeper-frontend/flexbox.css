@@ -9,3 +9,8 @@ h1 {
 
     align-content: center;
 }
+
+#sign_up_in {
+    display: flex;
+    flex-direction: row-reverse;
+}

@@ -14,7 +14,7 @@ p {
 	line-height: 1.5;
 }
 .container {
-	margin: 45px auto;
+	margin: 15px auto;
 	padding: 10px;
 	background: #fff;
   border-radius: 5px;
@@ -33,7 +33,20 @@ label {
     margin-top: 5px;
 }
 
-h1, h3 {
+h1, h3, .nav a, .nav {
     color: rgb(112, 15, 15);
 
+}
+
+.nav {
+    font-size: .7em;
+    margin-top: 20px;
+}
+
+.nav a {
+    text-decoration: none;
+}
+
+#sign_up_in {
+    
 }
