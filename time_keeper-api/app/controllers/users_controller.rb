@@ -11,7 +11,8 @@ class UsersController < ApplicationController
         else
             render json: {error_message: "There isn't a user account under that name."}
     end
-    
+
+
     def destroy
         session.clear
     end

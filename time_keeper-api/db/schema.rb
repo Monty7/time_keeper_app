@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(version: 2019_09_11_175601) do
 
   create_table "user_times", force: :cascade do |t|
     t.datetime "clock_in"
-    t.datetime "clock_out"
+    t.datetime "clock_out" 
     t.integer "month_time"
     t.integer "user_id"
   end
