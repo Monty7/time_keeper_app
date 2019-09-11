@@ -4,8 +4,10 @@ class UserTimesController < ApplicationController
     end
 
     def create
+      user = User.find_or_create_by(user_times_params)
+      
         binding.pry
-        User.UserTimes.create()
+      end
     end
 
     def update
@@ -13,5 +15,11 @@ class UserTimesController < ApplicationController
     end
 
     def destroy
+    end
+
+    private
+
+    def user_times_params
+        params.require(:user_time).permit(:clock_in, :clock_out, :month_time, :user_id)
     end
 end
