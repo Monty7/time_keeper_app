@@ -5,9 +5,9 @@ const calendarContainer = document.querySelector('.calendar');
 let calculateMonthTotal = 0;
 
 const submitUser = document.querySelector('#submit_user');
-//const addTimeBtn = document.querySelectorAll('.addTime');addTimeBtn.addEventListener('click', function(e){
-calendarContainer.addEventListener('click', function(e){
+const logoutLink = document.querySelector('#logout');
 
+calendarContainer.addEventListener('click', function(e){
     
     if(e.target.tagName === "BUTTON"){
         e.preventDefault();
@@ -15,7 +15,6 @@ calendarContainer.addEventListener('click', function(e){
         let clocked_in = e.target.parentElement.children[2].value;
         let clocked_out = e.target.parentElement.children[4].value;
         let monthOfTimes = getTimeCardMonth();
-        console.log(monthOfTimes);
         
         calculateMonthTotal += timeDifferenceInADay(clocked_out, clocked_in)
 
@@ -47,6 +46,7 @@ calendarContainer.addEventListener('click', function(e){
                 alert(data.err_message)
             } else {
                 console.log(data);
+             
                // console.log(calculateDayTime(clocked_in, clocked_out));
                // console.log(calclateMonthTotal());
           }
@@ -55,7 +55,6 @@ calendarContainer.addEventListener('click', function(e){
 })
 
 submitUser.addEventListener('click', function(e) {
-    console.log(e);
     e.preventDefault();
     const signInInput = document.querySelector('#sign_in_user');
     const loggedInUser = signInInput.value;
@@ -73,10 +72,17 @@ submitUser.addEventListener('click', function(e) {
     })
     .then(function(data){
         //console.log(data.name);
-        localStorage.setItem('loggedInUserID', data.id);
-       // loggedInUser = 
+        login(data.id)
+        checkCurrentUser()    
     })
 
+})
+
+logoutLink.addEventListener('click', function(e){
+ 
+    e.preventDefault()
+    logout();
+    //logout and remove logout link then display the signin link
 })
 
 function getTimeCardMonth(){
@@ -122,6 +128,25 @@ function timeDifferenceInADay(end, start){
     let startTime = new Date(0, 0, 0, start[0], start[1], 0);
     let endTime = new Date(0, 0, 0, end[0], end[1], 0);
     return endTime.getTime() - startTime.getTime(); //seconds
+}
+
+function checkCurrentUser(){
+    if(localStorage.getItem !== null){
+        let userNameContainer = document.createElement('div');
+        let userName = document.createElement('p');
+        let signInContainer = document.getElementById('sign_up_in');
+        userName.innerText = localStorage.getItem('loggedInUserID');
+        userNameContainer.append(userName);
+        signInContainer.append(userName);
+    }
+}
+
+function logout(){
+    localStorage.clear();
+}
+
+function login(id){
+    localStorage.setItem('loggedInUserID', id);
 }
 
 
