@@ -4,7 +4,13 @@ class UserTimesController < ApplicationController
     end
 
     def create
-      times = UserTimes.create(user_times_params)
+
+        user = User.find_by(id: params[:user_id])
+        if user
+            times = user.UserTimes.create(user_times_params)
+        else 
+            render json: {err_message: "A user is not not logged in."}
+        end
         binding.pry
   
     end

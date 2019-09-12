@@ -1,6 +1,6 @@
 const TIMES_URL = "http://localhost:3000/user_times";
 const USER_URL = "http://localhost:3000/users";
-let loggedInUser = null;
+//let loggedInUser = null;
 const calendarContainer = document.querySelector('.calendar');
 let calculateMonthTotal = 0;
 
@@ -21,13 +21,14 @@ calendarContainer.addEventListener('click', function(e){
         let totalMonthTime = convertTime(calculateMonthTotal);
 
         console.log(totalMonthTime);
+        let user = localStorage.getItem('loggedInUserID');
         fetch(TIMES_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"           
             },
-            body: JSON.stringify({clock_in: clocked_in, clock_out: clocked_out, month_time: totalMonthTime})
+            body: JSON.stringify({clock_in: clocked_in, clock_out: clocked_out, month_time: totalMonthTime, user_id: user})
         })
         .then(function(res){
            // console.log(res.json());
@@ -63,7 +64,9 @@ submitUser.addEventListener('click', function(e) {
         return res.json();
     })
     .then(function(data){
-        console.log(data);
+        //console.log(data.name);
+        localStorage.setItem('loggedInUserID', data.id);
+       // loggedInUser = 
     })
 
 })
