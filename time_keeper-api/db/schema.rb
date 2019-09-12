@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_164449) do
+ActiveRecord::Schema.define(version: 2019_09_12_170158) do
 
   create_table "user_times", force: :cascade do |t|
     t.datetime "clock_in"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_164449) do
     t.integer "month_time"
     t.integer "user_id"
     t.integer "date_of_times"
-    t.integer "month_of_times"
+    t.string "month_of_times"
   end
 
   create_table "users", force: :cascade do |t|

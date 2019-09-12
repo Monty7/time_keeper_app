@@ -14,7 +14,8 @@ calendarContainer.addEventListener('click', function(e){
         let captured_date = e.target.parentElement.children[0].innerText;
         let clocked_in = e.target.parentElement.children[2].value;
         let clocked_out = e.target.parentElement.children[4].value;
-       // let totalDayTime = calculateDayTime(clocked_in, clocked_out); //returns minutes
+        let monthOfTimes = getTimeCardMonth();
+        console.log(monthOfTimes);
         
         calculateMonthTotal += timeDifferenceInADay(clocked_out, clocked_in)
 
@@ -28,7 +29,14 @@ calendarContainer.addEventListener('click', function(e){
                 "Content-Type": "application/json",
                 "Accept": "application/json"           
             },
-            body: JSON.stringify({clock_in: clocked_in, clock_out: clocked_out, month_time: totalMonthTime, user_id: user})
+            body: JSON.stringify(
+                {clock_in: clocked_in, 
+                clock_out: clocked_out, 
+                month_time: totalMonthTime, 
+                date_of_times: captured_date, 
+                month_of_times: monthOfTimes, 
+                user_id: user
+            })
         })
         .then(function(res){
            // console.log(res.json());
@@ -71,7 +79,24 @@ submitUser.addEventListener('click', function(e) {
 
 })
 
-
+function getTimeCardMonth(){
+    var d = new Date();
+    var monthStrings = new Array();
+    monthStrings[0] = "January";
+    monthStrings[1] = "February";
+    monthStrings[2] = "March";
+    monthStrings[3] = "April";
+    monthStrings[4] = "May";
+    monthStrings[5] = "June";
+    monthStrings[6] = "July";
+    monthStrings[7] = "August";
+    monthStrings[8] = "September";
+    monthStrings[9] = "October";
+    monthStrings[10] = "November";
+    monthStrings[11] = "December";
+    var monthAsString = monthStrings[d.getMonth()];
+    return monthAsString;
+}
 
 function convertTime(timeSeconds){
     
