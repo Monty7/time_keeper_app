@@ -23,7 +23,10 @@ calendarContainer.addEventListener('click', function(e){
 
         let totalMonthTime = convertTime(calculateMonthTotal);
 
-        //console.log(totalMonthTime);
+        console.log(totalMonthTime);
+
+        console.log(captured_date, typeof captured_date);
+        console.log(monthOfTimes, typeof monthOfTimes);
         
         fetch(TIMES_URL, {
             method: "POST",
@@ -41,7 +44,7 @@ calendarContainer.addEventListener('click', function(e){
             })
         })
         .then(function(res){
-          //  console.log(res.json());
+            console.log(res.json());
             return res.json();
         })
         .then(function(data){
@@ -163,13 +166,13 @@ function checkForUser(){
        // console.log(loggedInUser)
         //displayCurrentUser(userID); 
 
-        fetch(`${SHOW_USER}/${userID}`)
+        fetch(`${USER_URL}/${userID}`)
         .then(function(res){
            // console.log(res);
             return res.json();
         })
         .then(function(data){
-            console.log(data);
+           
             login(data)
         })
         .catch(function(err){
