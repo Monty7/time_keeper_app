@@ -4,7 +4,7 @@
 body {
 	font-size: 1.35em;
 	font-family: 'Varela Round', sans-serif;
-	color: #fff;
+	color: rgb(112, 15, 15);
 	background: #e8e9e9;
 	padding-left: 5%;
 	padding-right: 5%;
@@ -24,7 +24,8 @@ p {
     width: 170px;
 	padding: 15px;
 	margin: 5px;	
-	background: rgb(112, 15, 15);
+    background: rgb(112, 15, 15);
+    color: #fff;
 	border-radius: 3px;
 }
 label {

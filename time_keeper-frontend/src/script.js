@@ -1,8 +1,11 @@
 const TIMES_URL = "http://localhost:3000/user_times";
 const USER_URL = "http://localhost:3000/users";
-//let loggedInUser = null;
+
 const calendarContainer = document.querySelector('.calendar');
 let calculateMonthTotal = 0;
+let userID = localStorage.getItem('loggedInUserID');
+//let loggedInUser;
+//store the whole user object here 
 
 const submitUser = document.querySelector('#submit_user');
 const logoutLink = document.querySelector('#logout');
@@ -20,8 +23,8 @@ calendarContainer.addEventListener('click', function(e){
 
         let totalMonthTime = convertTime(calculateMonthTotal);
 
-        console.log(totalMonthTime);
-        let user = localStorage.getItem('loggedInUserID');
+        //console.log(totalMonthTime);
+        
         fetch(TIMES_URL, {
             method: "POST",
             headers: {
@@ -34,11 +37,11 @@ calendarContainer.addEventListener('click', function(e){
                 month_time: totalMonthTime, 
                 date_of_times: captured_date, 
                 month_of_times: monthOfTimes, 
-                user_id: user
+                user_id: userID
             })
         })
         .then(function(res){
-           // console.log(res.json());
+          //  console.log(res.json());
             return res.json();
         })
         .then(function(data){
@@ -72,8 +75,10 @@ submitUser.addEventListener('click', function(e) {
     })
     .then(function(data){
         //console.log(data.name);
-        login(data.id)
-        checkCurrentUser()    
+        login(data)
+       // loggedInUser = data;
+        
+          
     })
 
 })
@@ -130,12 +135,12 @@ function timeDifferenceInADay(end, start){
     return endTime.getTime() - startTime.getTime(); //seconds
 }
 
-function checkCurrentUser(){
+function displayCurrentUser(name){
     if(localStorage.getItem !== null){
         let userNameContainer = document.createElement('div');
         let userName = document.createElement('p');
         let signInContainer = document.getElementById('sign_up_in');
-        userName.innerText = localStorage.getItem('loggedInUserID');
+        userName.innerText = `Welcome, ${name}`;
         userNameContainer.append(userName);
         signInContainer.append(userName);
     }
@@ -145,8 +150,37 @@ function logout(){
     localStorage.clear();
 }
 
-function login(id){
-    localStorage.setItem('loggedInUserID', id);
+function login(data){
+    localStorage.setItem('loggedInUserID', data.id);
+    displayCurrentUser(data.name); 
+    loggedInUser = data
+  //  console.log(loggedInUser)
 }
+
+function checkForUser(){
+    if(userID != 'undefined'){
+        console.log(userID)
+       // console.log(loggedInUser)
+        //displayCurrentUser(userID); 
+
+        fetch(`${SHOW_USER}/${userID}`)
+        .then(function(res){
+           // console.log(res);
+            return res.json();
+        })
+        .then(function(data){
+            console.log(data);
+            login(data)
+        })
+        .catch(function(err){
+            console.log(err);
+        })
+        //fetch user 
+        //.then (login)
+        //})
+    }
+}
+
+checkForUser()
 
 
