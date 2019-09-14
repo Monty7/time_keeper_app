@@ -174,8 +174,18 @@ function login(data){
     localStorage.setItem('loggedInUserID', data.id);
     displayCurrentUser(data.name); 
    // loggedInUser = data
-    console.log(allDateContainers)
-  
+   console.log(data);
+   console.log(data.user_times[2].clock_in.slice(8, 10))
+    console.log(allDateContainers[5].children[0].innerText)
+
+    allDateContainers.forEach(function(dateContainer){
+        data.user_times.forEach(function(stamp){
+            if(dateContainer.children[0].innerText === stamp.clock_in.slice(8, 10))
+                dateContainer.children[2].value = stamp.clock_in.slice(11, 16);
+                dateContainer.children[4].value = stamp.clock_out.slice(11, 16);  //fills out all dates with the last clock_out value in user_times array
+        })
+
+    })
 }
 
 function checkForUser(){
