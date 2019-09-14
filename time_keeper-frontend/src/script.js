@@ -180,9 +180,10 @@ function login(data){
 
     allDateContainers.forEach(function(dateContainer){
         data.user_times.forEach(function(stamp){
-            if(dateContainer.children[0].innerText === stamp.clock_in.slice(8, 10))
+            if(dateContainer.children[0].innerText === stamp.clock_in.slice(8, 10)){
                 dateContainer.children[2].value = stamp.clock_in.slice(11, 16);
                 dateContainer.children[4].value = stamp.clock_out.slice(11, 16);  //fills out all dates with the last clock_out value in user_times array
+            }
         })
 
     })
