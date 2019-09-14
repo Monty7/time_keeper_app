@@ -2,6 +2,7 @@ const TIMES_URL = "http://localhost:3000/user_times";
 const USER_URL = "http://localhost:3000/users";
 
 const calendarContainer = document.querySelector('.calendar');
+const calculateBtn = document.querySelector('#calculate');
 let calculateMonthTotal = 0;
 let userID = localStorage.getItem('loggedInUserID');
 //let loggedInUser;
@@ -11,22 +12,22 @@ const submitUser = document.querySelector('#submit_user');
 const logoutLink = document.querySelector('#logout');
 
 calendarContainer.addEventListener('click', function(e){
-    
-    if(e.target.tagName === "BUTTON"){
+    let currentUser;
+    if(e.target.textContent === "Add"){
         e.preventDefault();
         let captured_date = e.target.parentElement.children[0].innerText;
         let clocked_in = e.target.parentElement.children[2].value;
         let clocked_out = e.target.parentElement.children[4].value;
         let monthOfTimes = getTimeCardMonth();
         
-        calculateMonthTotal += timeDifferenceInADay(clocked_out, clocked_in)
+       // calculateMonthTotal += timeDifferenceInADay(clocked_out, clocked_in)
 
         let totalMonthTime = convertTime(calculateMonthTotal);
 
-        console.log(totalMonthTime);
+        // console.log(totalMonthTime);
 
-        console.log(captured_date, typeof captured_date);
-        console.log(monthOfTimes, typeof monthOfTimes);
+        // console.log(captured_date, typeof captured_date);
+        // console.log(monthOfTimes, typeof monthOfTimes);
         
         fetch(TIMES_URL, {
             method: "POST",
@@ -37,27 +38,41 @@ calendarContainer.addEventListener('click', function(e){
             body: JSON.stringify(
                 {clock_in: clocked_in, 
                 clock_out: clocked_out, 
-                month_time: totalMonthTime, 
+                //month_time: totalMonthTime, 
                 date_of_times: captured_date, 
                 month_of_times: monthOfTimes, 
                 user_id: userID
             })
         })
         .then(function(res){
-            console.log(res.json());
+            console.log(res)
+           // console.log(() => res.json());
             return res.json();
         })
         .then(function(data){
             if (data.err_message){
                 alert(data.err_message)
             } else {
-                console.log(data);
-             
-               // console.log(calculateDayTime(clocked_in, clocked_out));
-               // console.log(calclateMonthTotal());
+               // console.log(data.user_times[0].clock_in);
+                let test = Date.parse(data.user_times[0].clock_in)
+                console.log(clocked_in);
+                let diff = timeDifferenceInADay(clocked_out, clocked_in)
+                console.log(diff)
+                console.log(convertTime(diff));
+               // let clockIn = `${Date.parse(data.user_times[0].clock_in).getHours()}:${Date.parse(data.user_times[0].clock_in).getMinutes()}`;
+              //  let clockOut = `${Date.parse(data.user_times[0].clock_out).getHours()}:${Date.parse(data.user_times[0].clock_out).getMinutes()}`;
+                //let timeSeconds = timeDifferenceInADay(clockOut, clockIn);
+               // console.log(timeSeconds);
+               // console.log(convertTime(timeSeconds));
+               //timeDifferenceInADay(data.clock_in, data.clock_out)
+             // console.log(currentUser);
           }
         })
     }
+
+    // if(e.target.textContent === "Calculate"){
+    //     console.log(currentUser);
+    // }
 })
 
 submitUser.addEventListener('click', function(e) {
@@ -86,6 +101,11 @@ submitUser.addEventListener('click', function(e) {
 
 })
 
+// calculateBtn.addEventListener('click', function(e){
+//    // e.preventDefault();
+//    // console.log(e);
+// })
+
 logoutLink.addEventListener('click', function(e){
  
     e.preventDefault()
@@ -113,19 +133,21 @@ function getTimeCardMonth(){
 }
 
 function convertTime(timeSeconds){
-    
-    //let difference = timeDifferenceInADay(end, start);
-   // console.log(difference);
-    let hours = Math.floor(timeSeconds / 1000 / 60 / 60);
-   // console.log(hours);
-    timeSeconds -= hours * 1000 * 60 * 60;
-    let minutes = Math.floor(timeSeconds / 1000 / 60);
-    
+//     timeSeconds = parseInt(timeSeconds, 10);
+//     //let difference = timeDifferenceInADay(end, start);
+//    // console.log(difference);
+//     let hours = Math.floor(timeSeconds / 1000 / 60 / 60);
+//    // console.log(hours);
+//     timeSeconds -= hours * 1000 * 60 * 60;
+//     let minutes = Math.floor(timeSeconds / 1000 / 60);
+let seconds = (timeSeconds / 1000) % 60;
+let minutes = ((timeSeconds / (1000*60)) % 60);
+let hours = ((timeSeconds / (1000*60*60)) % 24);
    
     //return as an object instead
     return `${hours}:${minutes}`;
     //return minutes;
-    //return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
+   // return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
  
 }
 
@@ -154,6 +176,7 @@ function logout(){
 }
 
 function login(data){
+  //  console.log(data)
     localStorage.setItem('loggedInUserID', data.id);
     displayCurrentUser(data.name); 
     loggedInUser = data
@@ -163,8 +186,6 @@ function login(data){
 function checkForUser(){
     if(userID != 'undefined'){
         console.log(userID)
-       // console.log(loggedInUser)
-        //displayCurrentUser(userID); 
 
         fetch(`${USER_URL}/${userID}`)
         .then(function(res){
@@ -178,9 +199,7 @@ function checkForUser(){
         .catch(function(err){
             console.log(err);
         })
-        //fetch user 
-        //.then (login)
-        //})
+
     }
 }
 
