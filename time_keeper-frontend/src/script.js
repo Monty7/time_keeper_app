@@ -8,10 +8,10 @@ let userID = localStorage.getItem('loggedInUserID');
 
 //let loggedInUser;
 //store the whole user object here 
-const currentMonth = document.querySelector('#currentMonth');
 const currentTime = document.querySelector('#currentTime');
 const submitUser = document.querySelector('#submit_user');
 const logoutLink = document.querySelector('#logout');
+const allDateContainers = document.querySelectorAll('.item');
 
 calendarContainer.addEventListener('click', function(e){
     let currentUser;
@@ -20,11 +20,11 @@ calendarContainer.addEventListener('click', function(e){
         let captured_date = e.target.parentElement.children[0].innerText;
         let clocked_in = e.target.parentElement.children[2].value;
         let clocked_out = e.target.parentElement.children[4].value;
-        let monthOfTimes = getTimeCardMonth();
+       // let monthOfTimes = getTimeCardMonth();
         
        // calculateMonthTotal += timeDifferenceInADay(clocked_out, clocked_in)
 
-        let totalMonthTime = convertTime(calculateMonthTotal);
+      //  let totalMonthTime = convertTime(calculateMonthTotal);
 
         // console.log(totalMonthTime);
 
@@ -61,6 +61,7 @@ calendarContainer.addEventListener('click', function(e){
                 data.user_times.forEach(function(stamp){
                     totalMonthTime += timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
                 })
+               
                 console.log(totalMonthTime);
                 console.log(convertTime(totalMonthTime));
                 currentTime.innerText = convertTime(totalMonthTime);
@@ -101,10 +102,6 @@ submitUser.addEventListener('click', function(e) {
 
 })
 
-// calculateBtn.addEventListener('click', function(e){
-//    // e.preventDefault();
-//    // console.log(e);
-// })
 
 logoutLink.addEventListener('click', function(e){
  
@@ -113,42 +110,32 @@ logoutLink.addEventListener('click', function(e){
     //logout and remove logout link then display the signin link
 })
 
-function getTimeCardMonth(){
-    var d = new Date();
-    var monthStrings = new Array();
-    monthStrings[0] = "January";
-    monthStrings[1] = "February";
-    monthStrings[2] = "March";
-    monthStrings[3] = "April";
-    monthStrings[4] = "May";
-    monthStrings[5] = "June";
-    monthStrings[6] = "July";
-    monthStrings[7] = "August";
-    monthStrings[8] = "September";
-    monthStrings[9] = "October";
-    monthStrings[10] = "November";
-    monthStrings[11] = "December";
-    var monthAsString = monthStrings[d.getMonth()];
-    return monthAsString;
-}
+// function getTimeCardMonth(){
+//     var d = new Date();
+//     var monthStrings = new Array();
+//     monthStrings[0] = "January";
+//     monthStrings[1] = "February";
+//     monthStrings[2] = "March";
+//     monthStrings[3] = "April";
+//     monthStrings[4] = "May";
+//     monthStrings[5] = "June";
+//     monthStrings[6] = "July";
+//     monthStrings[7] = "August";
+//     monthStrings[8] = "September";
+//     monthStrings[9] = "October";
+//     monthStrings[10] = "November";
+//     monthStrings[11] = "December";
+//     var monthAsString = monthStrings[d.getMonth()];
+//     return monthAsString;
+// }
 
 function convertTime(timeSeconds){
-//     timeSeconds = parseInt(timeSeconds, 10);
-//     //let difference = timeDifferenceInADay(end, start);
-//    // console.log(difference);
-//     let hours = Math.floor(timeSeconds / 1000 / 60 / 60);
-//    // console.log(hours);
-//     timeSeconds -= hours * 1000 * 60 * 60;
-//     let minutes = Math.floor(timeSeconds / 1000 / 60);
+
 let seconds = (timeSeconds / 1000) % 60;
 let minutes = ((timeSeconds / (1000*60)) % 60);
 let hours = Math.floor((timeSeconds / (1000*60*60)) % 24);
 let twelveHours = Math.floor((timeSeconds / (1000*60*60)) % 12);
-    //return as an object instead
-    //console.log("TwelveHours: " + twelveHours);
-    //return `${hours}:${minutes}`;
-    //return minutes;
-   // return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
+
    return `${hours} HOURS, ${minutes} MINUTES`;
  
 }
@@ -186,8 +173,9 @@ function login(data){
   //  console.log(data)
     localStorage.setItem('loggedInUserID', data.id);
     displayCurrentUser(data.name); 
-    loggedInUser = data
-  //  console.log(loggedInUser)
+   // loggedInUser = data
+    console.log(allDateContainers)
+  
 }
 
 function checkForUser(){
