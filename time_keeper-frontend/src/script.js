@@ -5,9 +5,11 @@ const calendarContainer = document.querySelector('.calendar');
 const calculateBtn = document.querySelector('#calculate');
 let calculateMonthTotal = 0;
 let userID = localStorage.getItem('loggedInUserID');
+
 //let loggedInUser;
 //store the whole user object here 
-
+const currentMonth = document.querySelector('#currentMonth');
+const currentTime = document.querySelector('#currentTime');
 const submitUser = document.querySelector('#submit_user');
 const logoutLink = document.querySelector('#logout');
 
@@ -46,28 +48,22 @@ calendarContainer.addEventListener('click', function(e){
         })
         .then(function(res){
             console.log(res)
-           // console.log(() => res.json());
             return res.json();
         })
         .then(function(data){
             if (data.err_message){
                 alert(data.err_message)
             } else {
-               // console.log(data.user_times[0].clock_in);
-                let test1 = Date.parse(data.user_times[0].clock_in)
-                let test2 = Date.parse(data.user_times[0].clock_out)
-                //console.log("Sliced: " + data.user_times[22].clock_in.slice(11, 16));
-               // console.log(timeDifferenceInADay(test1, test2));
+
                 
                // let diff = timeDifferenceInADay(data.user_times[35].clock_in.slice(11, 16), data.user_times[35].clock_out.slice(11, 16))
                 let totalMonthTime = 0;
                 data.user_times.forEach(function(stamp){
-                   
                     totalMonthTime += timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
-
                 })
                 console.log(totalMonthTime);
                 console.log(convertTime(totalMonthTime));
+                currentTime.innerText = convertTime(totalMonthTime);
                // console.log(convertTime(diff));
                 console.log(data);
           }
@@ -149,10 +145,11 @@ let minutes = ((timeSeconds / (1000*60)) % 60);
 let hours = Math.floor((timeSeconds / (1000*60*60)) % 24);
 let twelveHours = Math.floor((timeSeconds / (1000*60*60)) % 12);
     //return as an object instead
-    console.log("TwelveHours: " + twelveHours);
-    return `${hours}:${minutes}`;
+    //console.log("TwelveHours: " + twelveHours);
+    //return `${hours}:${minutes}`;
     //return minutes;
    // return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
+   return `${hours} HOURS, ${minutes} MINUTES`;
  
 }
 
