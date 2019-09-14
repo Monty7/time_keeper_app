@@ -167,6 +167,7 @@ function displayCurrentUser(name){
 
 function logout(){
     localStorage.clear();
+    clearTimeValues();
 }
 
 function login(data){
@@ -186,6 +187,13 @@ function login(data){
             }
         })
 
+    })
+}
+
+function clearTimeValues(){
+    allDateContainers.forEach(function(dateContainer){
+        dateContainer.children[2].value = "";
+        dateContainer.children[4].value = "";
     })
 }
 
