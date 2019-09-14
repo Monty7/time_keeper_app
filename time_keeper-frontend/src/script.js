@@ -54,18 +54,22 @@ calendarContainer.addEventListener('click', function(e){
                 alert(data.err_message)
             } else {
                // console.log(data.user_times[0].clock_in);
-                let test = Date.parse(data.user_times[0].clock_in)
-                console.log(clocked_in);
-                let diff = timeDifferenceInADay(clocked_out, clocked_in)
-                console.log(diff)
-                console.log(convertTime(diff));
-               // let clockIn = `${Date.parse(data.user_times[0].clock_in).getHours()}:${Date.parse(data.user_times[0].clock_in).getMinutes()}`;
-              //  let clockOut = `${Date.parse(data.user_times[0].clock_out).getHours()}:${Date.parse(data.user_times[0].clock_out).getMinutes()}`;
-                //let timeSeconds = timeDifferenceInADay(clockOut, clockIn);
-               // console.log(timeSeconds);
-               // console.log(convertTime(timeSeconds));
-               //timeDifferenceInADay(data.clock_in, data.clock_out)
-             // console.log(currentUser);
+                let test1 = Date.parse(data.user_times[0].clock_in)
+                let test2 = Date.parse(data.user_times[0].clock_out)
+                //console.log("Sliced: " + data.user_times[22].clock_in.slice(11, 16));
+               // console.log(timeDifferenceInADay(test1, test2));
+                
+               // let diff = timeDifferenceInADay(data.user_times[35].clock_in.slice(11, 16), data.user_times[35].clock_out.slice(11, 16))
+                let totalMonthTime = 0;
+                data.user_times.forEach(function(stamp){
+                   
+                    totalMonthTime += timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
+
+                })
+                console.log(totalMonthTime);
+                console.log(convertTime(totalMonthTime));
+               // console.log(convertTime(diff));
+                console.log(data);
           }
         })
     }
@@ -142,9 +146,10 @@ function convertTime(timeSeconds){
 //     let minutes = Math.floor(timeSeconds / 1000 / 60);
 let seconds = (timeSeconds / 1000) % 60;
 let minutes = ((timeSeconds / (1000*60)) % 60);
-let hours = ((timeSeconds / (1000*60*60)) % 24);
-   
+let hours = Math.floor((timeSeconds / (1000*60*60)) % 24);
+let twelveHours = Math.floor((timeSeconds / (1000*60*60)) % 12);
     //return as an object instead
+    console.log("TwelveHours: " + twelveHours);
     return `${hours}:${minutes}`;
     //return minutes;
    // return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
@@ -153,11 +158,16 @@ let hours = ((timeSeconds / (1000*60*60)) % 24);
 
 function timeDifferenceInADay(end, start){
     start = start.split(":");
+    // if(start[0] === "00" || end[0] === "00"){
+    //     console.log("I should be 24 instead!!!!");
+    // }
+
     end = end.split(":");
 
     let startTime = new Date(0, 0, 0, start[0], start[1], 0);
     let endTime = new Date(0, 0, 0, end[0], end[1], 0);
-    return endTime.getTime() - startTime.getTime(); //seconds
+
+    return Math.abs(startTime.getTime() - endTime.getTime()); //seconds
 }
 
 function displayCurrentUser(name){
