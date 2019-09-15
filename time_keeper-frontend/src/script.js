@@ -3,7 +3,7 @@ const USER_URL = "http://localhost:3000/users";
 
 const calendarContainer = document.querySelector('.calendar');
 const calculateBtn = document.querySelector('#calculate');
-let calculateMonthTotal = 0;
+let totalMonthTime = 0;
 let userID = localStorage.getItem('loggedInUserID');
 
 //let loggedInUser;
@@ -14,7 +14,6 @@ const logoutLink = document.querySelector('#logout');
 const allDateContainers = document.querySelectorAll('.item');
 
 calendarContainer.addEventListener('click', function(e){
-    let currentUser;
     if(e.target.textContent === "Add"){
         e.preventDefault();
         let captured_date = e.target.parentElement.children[0].innerText;
@@ -57,6 +56,28 @@ calendarContainer.addEventListener('click', function(e){
                 console.log(data);
           }
         })
+        // if(e.target.parentElement.children[2].value !== ""){
+        //     let captured_date = e.target.parentElement.children[0].innerText;
+        //     let updated_clock_in = e.target.parentElement.children[2].value;
+        //     let updated_clock_out = e.target.parentElement.children[4].value;
+        //     fetch(`${TIMES_URL}/${captured_date}`, {
+        //         method: "PATCH",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             "Accept": "application/json"           
+        //         },
+        //         body: JSON.stringify({clock_in: updated_clock_in, clock_out: updated_clock_out})
+        //     })
+        //         .then(function(res){
+        //             return res.json();
+        //         })
+        //         .then(function(updated_data){
+        //             console.log(updated_data);
+        //         })
+        //         console.log(e);
+        // console.log(e.target.parentElement.children[2].value === "")
+        // console.log(e.target.parentElement.children[4].value !== "")
+        // }
     }
 })
 
@@ -87,7 +108,7 @@ submitUser.addEventListener('click', function(e) {
 })
 
 function calcTime(data){
-    let totalMonthTime = 0;
+    //let totalMonthTime = 0;
     data.user_times.forEach(function(stamp){
         totalMonthTime += timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
     })
@@ -178,7 +199,7 @@ function login(data){
             }
         })
     })
-    calcTime(data)
+    console.log(calcTime(data));
 }
 
 function clearTimeValues(){
