@@ -55,16 +55,13 @@ calendarContainer.addEventListener('click', function(e){
                 alert(data.err_message)
             } else {
 
-                
+                calcTime(data)
                // let diff = timeDifferenceInADay(data.user_times[35].clock_in.slice(11, 16), data.user_times[35].clock_out.slice(11, 16))
-                let totalMonthTime = 0;
-                data.user_times.forEach(function(stamp){
-                    totalMonthTime += timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
-                })
+
                
-                console.log(totalMonthTime);
-                console.log(convertTime(totalMonthTime));
-                currentTime.innerText = convertTime(totalMonthTime);
+               // console.log(totalMonthTime);
+               // console.log(convertTime(totalMonthTime));
+               
                // console.log(convertTime(diff));
                 console.log(data);
           }
@@ -102,6 +99,13 @@ submitUser.addEventListener('click', function(e) {
 
 })
 
+function calcTime(data){
+    let totalMonthTime = 0;
+    data.user_times.forEach(function(stamp){
+        totalMonthTime += timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
+    })
+    currentTime.innerText = convertTime(totalMonthTime);
+}
 
 logoutLink.addEventListener('click', function(e){
  
@@ -176,8 +180,8 @@ function login(data){
     displayCurrentUser(data.name); 
    // loggedInUser = data
    console.log(data);
-   console.log(data.user_times[2].clock_in.slice(8, 10))
-    console.log(allDateContainers[5].children[0].innerText)
+//    console.log(data.user_times[2].clock_in.slice(8, 10))
+//     console.log(allDateContainers[5].children[0].innerText)
 
     allDateContainers.forEach(function(dateContainer){
         data.user_times.forEach(function(stamp){
@@ -186,8 +190,8 @@ function login(data){
                 dateContainer.children[4].value = stamp.clock_out.slice(11, 16);  //fills out all dates with the last clock_out value in user_times array
             }
         })
-
     })
+    calcTime(data)
 }
 
 function clearTimeValues(){
