@@ -20,16 +20,7 @@ calendarContainer.addEventListener('click', function(e){
         let captured_date = e.target.parentElement.children[0].innerText;
         let clocked_in = e.target.parentElement.children[2].value;
         let clocked_out = e.target.parentElement.children[4].value;
-       // let monthOfTimes = getTimeCardMonth();
-        
-       // calculateMonthTotal += timeDifferenceInADay(clocked_out, clocked_in)
 
-      //  let totalMonthTime = convertTime(calculateMonthTotal);
-
-        // console.log(totalMonthTime);
-
-        // console.log(captured_date, typeof captured_date);
-        // console.log(monthOfTimes, typeof monthOfTimes);
         
         fetch(TIMES_URL, {
             method: "POST",
@@ -42,7 +33,7 @@ calendarContainer.addEventListener('click', function(e){
                 clock_out: clocked_out, 
                 //month_time: totalMonthTime, 
                 date_of_times: captured_date, 
-                month_of_times: monthOfTimes, 
+              //  month_of_times: monthOfTimes, 
                 user_id: userID
             })
         })
@@ -67,10 +58,6 @@ calendarContainer.addEventListener('click', function(e){
           }
         })
     }
-
-    // if(e.target.textContent === "Calculate"){
-    //     console.log(currentUser);
-    // }
 })
 
 submitUser.addEventListener('click', function(e) {
