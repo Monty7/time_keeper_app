@@ -99,8 +99,9 @@ calendarContainer.addEventListener('click', function(e){
                 return res.json();
             })
             .then(function(data_from_delete){
-                alert("Timestamp for the date '" + data_from_delete.user_times[0].clock_in.slice(8, 10) + "' has been deleted.");
-               // calcTime(data_from_delete)
+              //  console.log(data_from_delete)
+                alert("Timestamp has been deleted.");
+                calcTime(data_from_delete)
             })
     }
     

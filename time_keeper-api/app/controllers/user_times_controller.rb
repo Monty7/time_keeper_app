@@ -42,7 +42,7 @@ class UserTimesController < ApplicationController
     end
 
     def destroy
-        binding.pry
+       # binding.pry
         user = User.find_by({id: params[:user_id]})
          user.user_times.find_by({date_of_times: params[:date_of_times]}).destroy
         render json: user, include: :user_times
