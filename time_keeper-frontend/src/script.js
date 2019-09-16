@@ -15,10 +15,12 @@ const allDateContainers = document.querySelectorAll('.item');
 
 calendarContainer.addEventListener('click', function(e){
     if(e.target.textContent === "Add"){
+    
         e.preventDefault();
-        let captured_date = e.target.parentElement.children[0].innerText;
-        let clocked_in = e.target.parentElement.children[2].value;
-        let clocked_out = e.target.parentElement.children[4].value;
+       // console.log(e.target.parentElement.parentElement.children)
+        let captured_date = e.target.parentElement.parentElement.children[0].innerText;
+        let clocked_in = e.target.parentElement.parentElement.children[2].value;
+        let clocked_out = e.target.parentElement.parentElement.children[4].value;
 
         
         fetch(TIMES_URL, {
@@ -56,29 +58,31 @@ calendarContainer.addEventListener('click', function(e){
                 console.log(data);
           }
         })
-        if(e.target.parentElement.children[2].value !== ""){
-            let captured_date = e.target.parentElement.children[0].innerText;
-            let updated_clock_in = e.target.parentElement.children[2].value;
-            let updated_clock_out = e.target.parentElement.children[4].value;
-            fetch(`${TIMES_URL}/${captured_date}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"           
-                },
-                body: JSON.stringify({clock_in: updated_clock_in, clock_out: updated_clock_out})
-            })
-                .then(function(res){
-                    return res.json();
-                })
-                .then(function(updated_data){
-                    console.log(updated_data);
-                })
-                console.log(e);
-        console.log(e.target.parentElement.children[2].value === "")
-        console.log(e.target.parentElement.children[4].value !== "")
-        }
     }
+    if(e.target.textContent === "Update"){
+        console.log("Update works!")
+        let captured_date = e.target.parentElement.parentElement.children[0].innerText;
+        let updated_clock_in = e.target.parentElement.parentElement.children[2].value;
+        let updated_clock_out = e.target.parentElement.parentElement.children[4].value;
+        fetch(`${TIMES_URL}/${captured_date}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"           
+            },
+            body: JSON.stringify({user_id: userID, clock_in: updated_clock_in, clock_out: updated_clock_out, date_of_times: captured_date})
+        })
+            .then(function(res){
+                return res.json();
+            })
+            .then(function(updated_data){
+                console.log(updated_data);
+            })
+    //         console.log(e);
+    // console.log(e.target.parentElement.children[2].value === "")
+    // console.log(e.target.parentElement.children[4].value !== "")
+    }
+    
 })
 
 submitUser.addEventListener('click', function(e) {
