@@ -76,11 +76,11 @@ calendarContainer.addEventListener('click', function(e){
                 return res.json();
             })
             .then(function(updated_data){
-                console.log(updated_data);
+              //  console.log(updated_data.user_times[0].clock_in);
+                alert("Timestamp for the date '" + updated_data.user_times[0].clock_in.slice(8, 10) + "' has been updated.");
+                calcTime(updated_data)
             })
-    //         console.log(e);
-    // console.log(e.target.parentElement.children[2].value === "")
-    // console.log(e.target.parentElement.children[4].value !== "")
+
     }
     
 })
@@ -160,10 +160,6 @@ function convertTime(timeSeconds){
 
 function timeDifferenceInADay(end, start){
     start = start.split(":");
-    // if(start[0] === "00" || end[0] === "00"){
-    //     console.log("I should be 24 instead!!!!");
-    // }
-
     end = end.split(":");
 
     let startTime = new Date(0, 0, 0, start[0], start[1], 0);
@@ -219,6 +215,7 @@ function clearTimeValues(){
 }
 
 function checkForUser(){
+    userID = localStorage.getItem('loggedInUserID');
     if(userID != 'undefined'){
         console.log(userID)
 
