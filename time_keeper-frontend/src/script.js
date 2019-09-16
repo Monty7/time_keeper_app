@@ -4,7 +4,7 @@ const USER_URL = "http://localhost:3000/users";
 const calendarContainer = document.querySelector('.calendar');
 const calculateBtn = document.querySelector('#calculate');
 //let totalMonthTime = 0;
-let userID = localStorage.getItem('loggedInUserID');
+let userID;
 
 //let loggedInUser;
 //store the whole user object here 
@@ -21,7 +21,7 @@ calendarContainer.addEventListener('click', function(e){
         let captured_date = e.target.parentElement.parentElement.children[0].innerText;
         let clocked_in = e.target.parentElement.parentElement.children[2].value;
         let clocked_out = e.target.parentElement.parentElement.children[4].value;
-
+        console.log("User ID before posting times from JS is " + userID)
         
         fetch(TIMES_URL, {
             method: "POST",
@@ -102,8 +102,8 @@ submitUser.addEventListener('click', function(e) {
         return res.json();
     })
     .then(function(data){
-        //console.log(data.name);
-        login(data)
+       // console.log(data.name + ': ' + data.id);
+        login(data)  
        // loggedInUser = data;
         
           
@@ -191,6 +191,8 @@ function logout(){
 function login(data){
   //  console.log(data)
     localStorage.setItem('loggedInUserID', data.id);
+    userID = localStorage.getItem('loggedInUserID')
+  //  console.log("User ID of a new user after logging in from JS is " + userID);
     displayCurrentUser(data.name); 
    // loggedInUser = data
    console.log(data);
@@ -205,6 +207,7 @@ function login(data){
             }
         })
     })
+   // calcTime(data)
     console.log(calcTime(data));
 }
 
