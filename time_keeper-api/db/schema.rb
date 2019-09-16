@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_170158) do
+ActiveRecord::Schema.define(version: 2019_09_13_160619) do
 
   create_table "user_times", force: :cascade do |t|
     t.datetime "clock_in"
     t.datetime "clock_out"
     t.integer "month_time"
     t.integer "user_id"
-    t.integer "date_of_times"
+    t.string "date_of_times"
     t.string "month_of_times"
   end
 

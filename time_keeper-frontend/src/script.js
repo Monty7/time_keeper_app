@@ -60,7 +60,6 @@ calendarContainer.addEventListener('click', function(e){
         })
     }
     if(e.target.textContent === "Update"){
-        console.log("Update works!")
         let captured_date = e.target.parentElement.parentElement.children[0].innerText;
         let updated_clock_in = e.target.parentElement.parentElement.children[2].value;
         let updated_clock_out = e.target.parentElement.parentElement.children[4].value;
@@ -77,10 +76,32 @@ calendarContainer.addEventListener('click', function(e){
             })
             .then(function(updated_data){
               //  console.log(updated_data.user_times[0].clock_in);
-                alert("Timestamp for the date '" + updated_data.user_times[0].clock_in.slice(8, 10) + "' has been updated.");
+           
+                //alert("Timestamp for the date '" + updated_data.user_times[0].clock_in.slice(8, 10) + "' has been updated.");
                 calcTime(updated_data)
             })
-
+    }
+    if(e.target.textContent === "Delete"){
+        console.log("Delete Works!!!")
+        let captured_date = e.target.parentElement.parentElement.children[0].innerText;
+        let deleted_clock_in = e.target.parentElement.parentElement.children[2].value;
+        let deleted_clock_out = e.target.parentElement.parentElement.children[4].value;
+  
+        fetch(`${TIMES_URL}/${captured_date}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({user_id: userID, clock_in: deleted_clock_in, clock_out: deleted_clock_out, date_of_times: captured_date})
+        })
+            .then(function(res){
+                return res.json();
+            })
+            .then(function(data_from_delete){
+                alert("Timestamp for the date '" + data_from_delete.user_times[0].clock_in.slice(8, 10) + "' has been deleted.");
+               // calcTime(data_from_delete)
+            })
     }
     
 })

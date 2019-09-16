@@ -6,7 +6,7 @@ class UserTimesController < ApplicationController
     def create
 
         user = User.find_by(id: params[:user_id])
-        binding.pry
+       # binding.pry
         if user
            # binding.pry
             if (user.isDateDuplicated?(params[:date_of_times]))
@@ -31,17 +31,21 @@ class UserTimesController < ApplicationController
     end
 
     def update
-        binding.pry
         user = User.find_by({id: params[:user_id]})
-        user.user_times.find_by({date_of_times: params[:date_of_times]})
+        user_time_date = user.user_times.find_by({date_of_times: params[:date_of_times]})
         date = "#{params[:date_of_times]}"
         clock_in = "#{params[:clock_in]} #{date}" #constructing dateTime
         clock_out = "#{params[:clock_out]} #{date}" #constructing dateTime
-        user.user_times.update({clock_in: clock_in, clock_out: clock_out })
-        render json: user, include: :user_times
+        user_time_date.update(clock_in: clock_in, clock_out: clock_out)
+       render json: user, include: :user_times
+    
     end
 
     def destroy
+        binding.pry
+        user = User.find_by({id: params[:user_id]})
+         user.user_times.find_by({date_of_times: params[:date_of_times]}).destroy
+        render json: user, include: :user_times
     end
 
     # private
