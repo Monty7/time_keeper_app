@@ -3,7 +3,7 @@ const USER_URL = "http://localhost:3000/users";
 
 const calendarContainer = document.querySelector('.calendar');
 const calculateBtn = document.querySelector('#calculate');
-let totalMonthTime = 0;
+//let totalMonthTime = 0;
 let userID = localStorage.getItem('loggedInUserID');
 
 //let loggedInUser;
@@ -108,10 +108,13 @@ submitUser.addEventListener('click', function(e) {
 })
 
 function calcTime(data){
-    //let totalMonthTime = 0;
-    data.user_times.forEach(function(stamp){
-        totalMonthTime += timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
-    })
+    //let  = 0;
+    let totalMonthTime = data.user_times.reduce(function(total, stamp){
+        return total + timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
+    }, 0)
+    // data.user_times.forEach(function(stamp){
+    //     totalMonthTime += timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
+    // })
     currentTime.innerText = convertTime(totalMonthTime);
 }
 
@@ -142,12 +145,11 @@ logoutLink.addEventListener('click', function(e){
 // }
 
 function convertTime(timeSeconds){
-
-let seconds = (timeSeconds / 1000) % 60;
-let minutes = ((timeSeconds / (1000*60)) % 60);
-let hours = Math.floor((timeSeconds / (1000*60*60)) % 24);
-let twelveHours = Math.floor((timeSeconds / (1000*60*60)) % 12);
-
+    let seconds, minutes, hours = 0;
+    seconds = (timeSeconds / 1000) % 60;
+    minutes = ((timeSeconds / (1000*60)) % 60);
+    hours = Math.floor((timeSeconds / (1000*60*60)) % 24);
+ //twelveHours = Math.floor((timeSeconds / (1000*60*60)) % 12);
    return `${hours} HOURS, ${minutes} MINUTES`;
  
 }
@@ -195,7 +197,7 @@ function login(data){
         data.user_times.forEach(function(stamp){
             if(dateContainer.children[0].innerText === stamp.clock_in.slice(8, 10)){
                 dateContainer.children[2].value = stamp.clock_in.slice(11, 16);
-                dateContainer.children[4].value = stamp.clock_out.slice(11, 16);  //fills out all dates with the last clock_out value in user_times array
+                dateContainer.children[4].value = stamp.clock_out.slice(11, 16);
             }
         })
     })
