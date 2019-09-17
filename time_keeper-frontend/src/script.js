@@ -9,8 +9,11 @@ let userID;
 //let loggedInUser;
 //store the whole user object here 
 const currentTime = document.querySelector('#currentTime');
+let signUpDiv = document.getElementById('sign_up');
+let welcomeMessage = document.querySelector('#welcomeUser p');
+
 const submitUser = document.querySelector('#submit_user');
-const logoutLink = document.querySelector('#logout');
+const logoutLink = document.querySelector('#logoutLink');
 const allDateContainers = document.querySelectorAll('.item');
 
 calendarContainer.addEventListener('click', function(e){
@@ -48,13 +51,6 @@ calendarContainer.addEventListener('click', function(e){
             } else {
 
                 calcTime(data)
-               // let diff = timeDifferenceInADay(data.user_times[35].clock_in.slice(11, 16), data.user_times[35].clock_out.slice(11, 16))
-
-               
-               // console.log(totalMonthTime);
-               // console.log(convertTime(totalMonthTime));
-               
-               // console.log(convertTime(diff));
                 console.log(data);
           }
         })
@@ -190,28 +186,57 @@ function timeDifferenceInADay(end, start){
     return Math.abs(startTime.getTime() - endTime.getTime()); //seconds
 }
 
-function displayCurrentUser(name){
+function displayCurrentUser(data){
     if(localStorage.getItem !== null){
-        let userNameContainer = document.createElement('div');
-        let userName = document.createElement('p');
-        let signInContainer = document.getElementById('sign_up_in');
-        userName.innerText = `Welcome, ${name}`;
-        userNameContainer.append(userName);
-        signInContainer.append(userName);
+        // let userNameContainer = document.createElement('div');
+        // let logoutDiv = document.createElement('div');
+        // let logout = "<a href='#' id='logout'>Log Out</a>";
+        // logoutDiv.innerHTML = logout;
+        
+       // userNameContainer.setAttribute('id', 'welcome');
+        
+        // let signInContainer = document.getElementById('sign_up_in');
+        // userName.innerText = `Welcome, ${name}`;
+        // userNameContainer.append(userName);
+        // userNameContainer.append(logoutDiv);
+        // signInContainer.append(userNameContainer);
+        
+      
+            //displayCurrentUser(data.name); 
+            //console.log(document.getElementById('sign_up'))
+            
+            signUpDiv.style.display = 'none';
+            welcomeMessage.innerText = `Welcome, ${data.name}`
+            logoutLink.style.display = 'block';
+
+            
     }
+}
+
+function removeCurrentUser(){
+    signUpDiv.style.display = 'block';
+    logoutLink.style.display = 'none';
+    welcomeMessage.innerText = "";
 }
 
 function logout(){
     localStorage.clear();
+    currentTime.innerText = "";
     clearTimeValues();
+    removeCurrentUser();
 }
 
 function login(data){
-  //  console.log(data)
+    let signInContainer = document.getElementById('sign_up_in');
+    //const signUpDiv = document.getElementById('sign_up')
+    const welcomeDiv = document.getElementById('#welcome')
+    //document.getElementById("welcome")
     localStorage.setItem('loggedInUserID', data.id);
     userID = localStorage.getItem('loggedInUserID')
   //  console.log("User ID of a new user after logging in from JS is " + userID);
-    displayCurrentUser(data.name); 
+    displayCurrentUser(data)
+
+    
    // loggedInUser = data
    console.log(data);
 //    console.log(data.user_times[2].clock_in.slice(8, 10))
@@ -238,6 +263,7 @@ function clearTimeValues(){
 
 function checkForUser(){
     userID = localStorage.getItem('loggedInUserID');
+    console.log(userID)
     if(userID != 'undefined'){
         console.log(userID)
 

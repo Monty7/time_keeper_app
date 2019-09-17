@@ -38,6 +38,9 @@ h1, h3, .nav a, .nav {
     color: rgb(112, 15, 15);
 
 }
+#logoutLink {
+	display: none;
+}
 
 .nav {
     font-size: .7em;
