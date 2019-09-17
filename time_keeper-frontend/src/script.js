@@ -71,9 +71,6 @@ calendarContainer.addEventListener('click', function(e){
                 return res.json();
             })
             .then(function(updated_data){
-              //  console.log(updated_data.user_times[0].clock_in);
-           
-                //alert("Timestamp for the date '" + updated_data.user_times[0].clock_in.slice(8, 10) + "' has been updated.");
                 calcTime(updated_data)
             })
     }
@@ -120,23 +117,18 @@ submitUser.addEventListener('click', function(e) {
         return res.json();
     })
     .then(function(data){
-       // console.log(data.name + ': ' + data.id);
         login(data)  
-       // loggedInUser = data;
         
-          
     })
 
 })
 
 function calcTime(data){
-    //let  = 0;
+
     let totalMonthTime = data.user_times.reduce(function(total, stamp){
         return total + timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
     }, 0)
-    // data.user_times.forEach(function(stamp){
-    //     totalMonthTime += timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
-    // })
+
     currentTime.innerText = convertTime(totalMonthTime);
 }
 
@@ -144,27 +136,8 @@ logoutLink.addEventListener('click', function(e){
  
     e.preventDefault()
     logout();
-    //logout and remove logout link then display the signin link
-})
 
-// function getTimeCardMonth(){
-//     var d = new Date();
-//     var monthStrings = new Array();
-//     monthStrings[0] = "January";
-//     monthStrings[1] = "February";
-//     monthStrings[2] = "March";
-//     monthStrings[3] = "April";
-//     monthStrings[4] = "May";
-//     monthStrings[5] = "June";
-//     monthStrings[6] = "July";
-//     monthStrings[7] = "August";
-//     monthStrings[8] = "September";
-//     monthStrings[9] = "October";
-//     monthStrings[10] = "November";
-//     monthStrings[11] = "December";
-//     var monthAsString = monthStrings[d.getMonth()];
-//     return monthAsString;
-// }
+})
 
 function convertTime(timeSeconds){
     let seconds, minutes, hours = 0;
@@ -187,29 +160,10 @@ function timeDifferenceInADay(end, start){
 }
 
 function displayCurrentUser(data){
-    if(localStorage.getItem !== null){
-        // let userNameContainer = document.createElement('div');
-        // let logoutDiv = document.createElement('div');
-        // let logout = "<a href='#' id='logout'>Log Out</a>";
-        // logoutDiv.innerHTML = logout;
-        
-       // userNameContainer.setAttribute('id', 'welcome');
-        
-        // let signInContainer = document.getElementById('sign_up_in');
-        // userName.innerText = `Welcome, ${name}`;
-        // userNameContainer.append(userName);
-        // userNameContainer.append(logoutDiv);
-        // signInContainer.append(userNameContainer);
-        
-      
-            //displayCurrentUser(data.name); 
-            //console.log(document.getElementById('sign_up'))
-            
-            signUpDiv.style.display = 'none';
-            welcomeMessage.innerText = `Welcome, ${data.name}`
-            logoutLink.style.display = 'block';
-
-            
+    if(localStorage.getItem !== null){        
+        signUpDiv.style.display = 'none';
+        welcomeMessage.innerText = `Welcome, ${data.name}`
+        logoutLink.style.display = 'block';      
     }
 }
 
@@ -227,20 +181,12 @@ function logout(){
 }
 
 function login(data){
-    let signInContainer = document.getElementById('sign_up_in');
-    //const signUpDiv = document.getElementById('sign_up')
-    const welcomeDiv = document.getElementById('#welcome')
-    //document.getElementById("welcome")
+
     localStorage.setItem('loggedInUserID', data.id);
     userID = localStorage.getItem('loggedInUserID')
-  //  console.log("User ID of a new user after logging in from JS is " + userID);
-    displayCurrentUser(data)
 
-    
-   // loggedInUser = data
+    displayCurrentUser(data)
    console.log(data);
-//    console.log(data.user_times[2].clock_in.slice(8, 10))
-//     console.log(allDateContainers[5].children[0].innerText)
 
     allDateContainers.forEach(function(dateContainer){
         data.user_times.forEach(function(stamp){
@@ -251,7 +197,7 @@ function login(data){
         })
     })
    // calcTime(data)
-    console.log(calcTime(data));
+  //  console.log(calcTime(data));
 }
 
 function clearTimeValues(){
