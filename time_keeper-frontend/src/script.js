@@ -6,8 +6,7 @@ const calculateBtn = document.querySelector('#calculate');
 //let totalMonthTime = 0;
 let userID;
 
-//let loggedInUser;
-//store the whole user object here 
+
 const currentTime = document.querySelector('#currentTime');
 let signUpDiv = document.getElementById('sign_up');
 let welcomeMessage = document.querySelector('#welcomeUser p');
@@ -17,10 +16,8 @@ const logoutLink = document.querySelector('#logoutLink');
 const allDateContainers = document.querySelectorAll('.item');
 
 calendarContainer.addEventListener('click', function(e){
-    if(e.target.textContent === "Add"){
-    
+    if(e.target.textContent === "Add"){   
         e.preventDefault();
-       // console.log(e.target.parentElement.parentElement.children)
         let captured_date = e.target.parentElement.parentElement.children[0].innerText;
         let clocked_in = e.target.parentElement.parentElement.children[2].value;
         let clocked_out = e.target.parentElement.parentElement.children[4].value;
@@ -51,7 +48,7 @@ calendarContainer.addEventListener('click', function(e){
             } else {
 
                 calcTime(data)
-                console.log(data);
+                //console.log(data);
           }
         })
     }
@@ -71,7 +68,11 @@ calendarContainer.addEventListener('click', function(e){
                 return res.json();
             })
             .then(function(updated_data){
-                calcTime(updated_data)
+                if(updated_data.err_message){
+                    alert(updated_data.err_message)
+                }else{
+                    calcTime(updated_data)
+                }   
             })
     }
     if(e.target.textContent === "Delete"){
@@ -92,9 +93,12 @@ calendarContainer.addEventListener('click', function(e){
                 return res.json();
             })
             .then(function(data_from_delete){
-              //  console.log(data_from_delete)
-                alert("Timestamp has been deleted.");
-                calcTime(data_from_delete)
+                if(data_from_delete.err_message){
+                    alert(data_from_delete.err_message)
+                }else{
+                    alert("Timestamp has been deleted.");
+                    calcTime(data_from_delete)
+                }   
             })
     }
     
@@ -123,21 +127,17 @@ submitUser.addEventListener('click', function(e) {
 
 })
 
-function calcTime(data){
+logoutLink.addEventListener('click', function(e){
+    e.preventDefault()
+    logout();
+})
 
+function calcTime(data){
     let totalMonthTime = data.user_times.reduce(function(total, stamp){
         return total + timeDifferenceInADay(stamp.clock_in.slice(11, 16), stamp.clock_out.slice(11, 16));
     }, 0)
-
     currentTime.innerText = convertTime(totalMonthTime);
 }
-
-logoutLink.addEventListener('click', function(e){
- 
-    e.preventDefault()
-    logout();
-
-})
 
 function convertTime(timeSeconds){
     let seconds, minutes, hours = 0;
@@ -196,8 +196,6 @@ function login(data){
             }
         })
     })
-   // calcTime(data)
-  //  console.log(calcTime(data));
 }
 
 function clearTimeValues(){
@@ -215,7 +213,6 @@ function checkForUser(){
 
         fetch(`${USER_URL}/${userID}`)
         .then(function(res){
-           // console.log(res);
             return res.json();
         })
         .then(function(data){
