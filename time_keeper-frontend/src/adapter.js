@@ -10,10 +10,10 @@ class App{
         this.logoutLink = document.querySelector('#logoutLink');
         this.allDateContainers = document.querySelectorAll('.item');
         this.userID;
-
+        this.times = [];
         this.calendarContainer.addEventListener("click", this.calendarContainerBtnEvents)
         this.submitUser.addEventListener("click", this.newOrFindUser)
-        this.logoutLink.addEventListener("click")
+        this.logoutLink.addEventListener("click", this.logoutLink)
     }
 
 
@@ -127,6 +127,11 @@ class App{
                 
             })
         
+        }
+
+        logoutLink =(e) => {
+            e.preventDefault()
+            logout();
         }
 
 }
